@@ -162,3 +162,59 @@ a {
 .site-footer p {
   margin: 0 0 0.5rem;
 }
+
+.grid-3 {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+}
+
+.alt {
+  background: #eef2ff;
+}
+
+.page-hero {
+  padding: 5rem 0 3rem;
+  background: #ffffff;
+}
+
+.page-hero-text {
+  max-width: 760px;
+  font-size: 1.05rem;
+  color: #475569;
+}
+
+.service-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.service-card p {
+  margin: 0;
+  color: #475569;
+}
+
+.split-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .split-section {
+    grid-template-columns: 1fr;
+  }
+}
