@@ -1,121 +1,142 @@
-import { NavLink, Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+import { useState } from 'react'
 
-const navItems = [
+type MenuSection = {
+  label: string
+  to: string
+  children?: string[]
+}
+
+const menuItems: MenuSection[] = [
   { label: 'Home', to: '/' },
   { label: 'Tax Services', to: '/tax-services' },
-  { label: 'About', to: '/about' },
-  { label: 'Services', to: '/services' },
-  { label: 'Tax Center', to: '/tax-center' },
-  { label: 'Resources', to: '/resources' },
+  {
+    label: 'About',
+    to: '/about',
+    children: ['Our Values', 'Client Reviews', 'Meet Our Team'],
+  },
+  {
+    label: 'Services',
+    to: '/services',
+    children: [
+      'Small Business Accounting',
+      'Payroll',
+      'Part-Time CFO Services',
+      'Audits - Reviews - Compilations',
+      'Strategic Business Planning',
+      'New Business Formation',
+      'Non-Profit Organizations',
+      'Internal Controls',
+      'Bookkeeping Services',
+      'Tax Preparation',
+      'Tax Planning',
+      'Estate & Trust Tax Services',
+      'Tax Problems',
+      'Bookkeeping Software & Support',
+      'Software Setup',
+      'Construction',
+      'Restaurants',
+      'Real Estate',
+      'Retailers',
+      'Entertainment',
+      'Non Profits & Churches',
+    ],
+  },
+  {
+    label: 'Tax Center',
+    to: '/tax-center',
+    children: [
+      'Track Your Refund',
+      'Tax Due Dates',
+      'Tax Rates',
+      'IRS Tax Forms and Publications',
+      'Record Retention Guide',
+      'State Tax Forms',
+    ],
+  },
+  {
+    label: 'Resources',
+    to: '/resources',
+    children: [
+      "This Month's Newsletter",
+      'Previous Newsletters',
+      'Life Events',
+      'Business Strategies',
+      'Investment Strategies',
+      'Tax Strategies for Business Owners',
+      'Tax Strategies for Individuals',
+      'Frequently Asked Questions',
+      'Financial Calculators',
+      'Client Portal',
+      'SecureSend',
+      'Internet Links',
+    ],
+  },
   { label: 'Contact', to: '/contact' },
 ]
 
 function Navbar() {
+  const [openSection, setOpenSection] = useState<string | null>(null)
+
+  const toggleSection = (label: string) => {
+    setOpenSection((current) => (current === label ? null : label))
+  }
+
   return (
-    <header className="site-header">
-      <div className="container nav-container">
-        <Link to="/" className="brand">
-          <span className="brand-mark">TLA</span>
-          <div>
-            <h1>TrustLedger Accounting</h1>
-            <p>Small Firm Personality, Big Firm Capability</p>
+    <header className="site-header accordion-header">
+      <div className="container accordion-container">
+        <Link to="/" className="accordion-brand">
+          <div className="brand-logo-wrap">
+            <div className="brand-arc" />
+            <div className="brand-logo-text">
+              <span className="brand-initials">TLA</span>
+              <span className="brand-full-name">TrustLedger Accounting</span>
+            </div>
           </div>
         </Link>
 
-        <nav className="nav">
-          {navItems.map((item) => (
-            <div className="nav-item" key={item.to}>
-              <NavLink
-                to={item.to}
-                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-              >
-                {item.label}
-              </NavLink>
+        <nav className="accordion-nav">
+          {menuItems.map((item) => {
+            const isOpen = openSection === item.label
+            const hasChildren = Boolean(item.children?.length)
 
-              {(item.label === 'About' ||
-                item.label === 'Services' ||
-                item.label === 'Tax Center' ||
-                item.label === 'Resources') && (
-                <div className="dropdown-menu">
-                  {item.label === 'About' && (
-                    <>
-                      <span className="dropdown-title">About</span>
-                      <span className="dropdown-link">Our Values</span>
-                      <span className="dropdown-link">Client Reviews</span>
-                      <span className="dropdown-link">Meet Our Team</span>
-                    </>
-                  )}
+            return (
+              <div className="accordion-item" key={item.label}>
+                <div className="accordion-row">
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      isActive ? 'accordion-link active' : 'accordion-link'
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
 
-                  {item.label === 'Services' && (
-                    <>
-                      <span className="dropdown-title">Business Services</span>
-                      <span className="dropdown-link">Small Business Accounting</span>
-                      <span className="dropdown-link">Payroll</span>
-                      <span className="dropdown-link">Part-Time CFO Services</span>
-                      <span className="dropdown-link">Audits - Reviews - Compilations</span>
-                      <span className="dropdown-link">Strategic Business Planning</span>
-                      <span className="dropdown-link">New Business Formation</span>
-                      <span className="dropdown-link">Non-Profit Organizations</span>
-                      <span className="dropdown-link">Internal Controls</span>
-                      <span className="dropdown-link">Bookkeeping Services</span>
-
-                      <span className="dropdown-title">Tax Services</span>
-                      <span className="dropdown-link">Tax Preparation</span>
-                      <span className="dropdown-link">Tax Planning</span>
-                      <span className="dropdown-link">Estate &amp; Trust Tax Services</span>
-                      <span className="dropdown-link">Tax Problems</span>
-
-                      <span className="dropdown-title">Additional Services</span>
-                      <span className="dropdown-link">Bookkeeping Software &amp; Support</span>
-                      <span className="dropdown-link">Software Setup</span>
-
-                      <span className="dropdown-title">Industries</span>
-                      <span className="dropdown-link">Construction</span>
-                      <span className="dropdown-link">Restaurants</span>
-                      <span className="dropdown-link">Real Estate</span>
-                      <span className="dropdown-link">Retailers</span>
-                      <span className="dropdown-link">Entertainment</span>
-                      <span className="dropdown-link">Non Profits &amp; Churches</span>
-                    </>
-                  )}
-
-                  {item.label === 'Tax Center' && (
-                    <>
-                      <span className="dropdown-title">Tax Center</span>
-                      <span className="dropdown-link">Track Your Refund</span>
-                      <span className="dropdown-link">Tax Due Dates</span>
-                      <span className="dropdown-link">Tax Rates</span>
-                      <span className="dropdown-link">IRS Tax Forms and Publications</span>
-                      <span className="dropdown-link">Record Retention Guide</span>
-                      <span className="dropdown-link">State Tax Forms</span>
-                    </>
-                  )}
-
-                  {item.label === 'Resources' && (
-                    <>
-                      <span className="dropdown-title">Newsletter</span>
-                      <span className="dropdown-link">This Month&apos;s Newsletter</span>
-                      <span className="dropdown-link">Previous Newsletters</span>
-
-                      <span className="dropdown-title">Guides</span>
-                      <span className="dropdown-link">Life Events</span>
-                      <span className="dropdown-link">Business Strategies</span>
-                      <span className="dropdown-link">Investment Strategies</span>
-                      <span className="dropdown-link">Tax Strategies for Business Owners</span>
-                      <span className="dropdown-link">Tax Strategies for Individuals</span>
-                      <span className="dropdown-link">Frequently Asked Questions</span>
-
-                      <span className="dropdown-title">Tools</span>
-                      <span className="dropdown-link">Financial Calculators</span>
-                      <span className="dropdown-link">Client Portal</span>
-                      <span className="dropdown-link">SecureSend</span>
-                      <span className="dropdown-link">Internet Links</span>
-                    </>
+                  {hasChildren && (
+                    <button
+                      type="button"
+                      className="accordion-toggle"
+                      onClick={() => toggleSection(item.label)}
+                      aria-expanded={isOpen}
+                      aria-label={`Toggle ${item.label}`}
+                    >
+                      {isOpen ? '−' : '+'}
+                    </button>
                   )}
                 </div>
-              )}
-            </div>
-          ))}
+
+                {hasChildren && isOpen && (
+                  <div className="accordion-panel">
+                    {item.children!.map((child) => (
+                      <div className="accordion-sublink" key={child}>
+                        {child}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </nav>
       </div>
     </header>
